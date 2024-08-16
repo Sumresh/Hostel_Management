@@ -22,29 +22,40 @@ const HomePage = ({ user, designation, handleLogout }) => {
           >
             Logout
           </button>
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full">
             {(isManager || isWarden) && (
               <Link
                 to="/EmployeeForm"
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50"
+                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50 text-center flex-1"
               >
-                Employee Form
+                Employee Creation Form
               </Link>
             )}
+
+            {(isManager || isWarden) && (
+              <Link
+                to="/EmployeeTableData"
+                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50 text-center flex-1"
+              >
+                Employee ID Update
+              </Link>
+            )}
+          </div>
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full">
             {isManager && (
               <Link
                 to="/EmployeeTable"
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50"
+                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50 text-center flex-1"
               >
-                Employee Table
+                Employee Details
               </Link>
             )}
             {isManager && (
               <Link
                 to="/Register"
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50"
+                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50 text-center flex-1"
               >
-                Register
+                Register New Email Id
               </Link>
             )}
           </div>

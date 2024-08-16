@@ -7,6 +7,7 @@ import { getDatabase, ref, get } from "firebase/database";
 import EmployeeForm from "./components/EmployeeForm";
 import EmployeeTable from "./components/EmployeeTable";
 import Register from "./components/Register";
+import EmployeeTableData from "./components/EmployeeTableData";
 // import "./App.css"; // Import your styles here
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
           <Route path="/EmployeeForm" element={<EmployeeForm />} />
           <Route path="/EmployeeTable" element={<EmployeeTable />} />
           <Route path="/Register" element={<Register />} />
+          <Route path="/EmployeeTableData" element={<EmployeeTableData />} />
         </Routes>
       </div>
     </Router>
