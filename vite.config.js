@@ -7,4 +7,7 @@ export default defineConfig({
   server: {
     host: true, // This allows external access
   },
+  build: {
+    outDir: "build", // Change the output directory to 'build'
+  },
 });
