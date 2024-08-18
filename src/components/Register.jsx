@@ -6,15 +6,16 @@ import { getDatabase, ref, set } from "firebase/database";
 import background1 from "./Image.jpeg";
 import { initializeApp } from "firebase/app";
 
-// Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAVv4TSNJcwdxsxADEDxcQbZuDPnTY49Ms",
-  authDomain: "ifi-attendance.firebaseapp.com",
-  databaseURL: "https://ifi-attendance-default-rtdb.firebaseio.com/",
-  projectId: "ifi-attendance",
-  storageBucket: "ifi-attendance.appspot.com",
-  messagingSenderId: "851583311048",
-  appId: "1:851583311048:web:bc892d4139c91dfaf2d9fd",
+  apiKey: "AIzaSyAHBA7J8LLc8-ry-sHcy5_t3OjURzBSsEg",
+  authDomain: "hostel-management-system-87b61.firebaseapp.com",
+  databaseURL:
+    "https://hostel-management-system-87b61-default-rtdb.firebaseio.com/",
+  projectId: "hostel-management-system-87b61",
+  storageBucket: "hostel-management-system-87b61.appspot.com",
+  messagingSenderId: "474643085278",
+  appId: "1:474643085278:web:9380e5c41bc605900a8f4f",
+  measurementId: "G-442DLJQ799",
 };
 
 // Initialize Firebase

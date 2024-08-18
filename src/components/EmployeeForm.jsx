@@ -6,18 +6,22 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import background2 from "./Image.jpeg";
+import { Link } from "react-router-dom";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAVv4TSNJcwdxsxADEDxcQbZuDPnTY49Ms",
-  authDomain: "ifi-attendance.firebaseapp.com",
-  databaseURL: "https://ifi-attendance-default-rtdb.firebaseio.com/",
-  projectId: "ifi-attendance",
-  storageBucket: "ifi-attendance.appspot.com",
-  messagingSenderId: "851583311048",
-  appId: "1:851583311048:web:bc892d4139c91dfaf2d9fd",
+  apiKey: "AIzaSyAHBA7J8LLc8-ry-sHcy5_t3OjURzBSsEg",
+  authDomain: "hostel-management-system-87b61.firebaseapp.com",
+  databaseURL:
+    "https://hostel-management-system-87b61-default-rtdb.firebaseio.com/",
+  projectId: "hostel-management-system-87b61",
+  storageBucket: "hostel-management-system-87b61.appspot.com",
+  messagingSenderId: "474643085278",
+  appId: "1:474643085278:web:9380e5c41bc605900a8f4f",
+  measurementId: "G-442DLJQ799",
 };
 
+// Initialize Firebase
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
@@ -60,6 +64,8 @@ const EmployeeForm = () => {
   const [state, setState] = useState("");
   const [referral, setReferral] = useState("");
   const [shift, setShift] = useState("A Shift");
+  const [status, setStatus] = useState("Active");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,6 +80,8 @@ const EmployeeForm = () => {
       state,
       referral,
       shift,
+      status,
+      phoneNumber, // Include phone number in the data
     };
 
     try {
@@ -86,15 +94,7 @@ const EmployeeForm = () => {
   };
 
   return (
-    // container mx-auto my-8 px-4 md:px-8 lg:px-16
-    <div
-      className=" container mx-auto my-8 px-4 md:px-8 lg:px-16"
-      //   style={{
-      //     backgroundImage: `url(${background2})`,
-      //     backgroundSize: "cover",
-      //     backgroundPosition: "center",
-      //   }}
-    >
+    <div className="container mx-auto my-8 px-4 md:px-8 lg:px-16">
       <div className="border border-gray-300 p-6 rounded-lg shadow-lg bg-transparent">
         <h1 className="text-2xl font-bold mb-4">Employee Details</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -188,6 +188,42 @@ const EmployeeForm = () => {
               <option value="A Shift">A Shift</option>
               <option value="B Shift">B Shift</option>
             </select>
+          </div>
+          <div>
+            <label htmlFor="status" className="block text-lg font-medium mb-2">
+              Status:
+            </label>
+            <select
+              className="w-full p-2 border rounded"
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              required
+            >
+              <option value="Active">Active</option>
+              <option value="Resigned">Resigned</option>
+            </select>
+          </div>
+          <div>
+            <label
+              htmlFor="phoneNumber"
+              className="block text-lg font-medium mb-2"
+            >
+              Phone Number:
+            </label>
+            <input
+              type="tel"
+              className="w-full p-2 border rounded"
+              id="phoneNumber"
+              value={phoneNumber}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d{0,10}$/.test(value)) {
+                  setPhoneNumber(value);
+                }
+              }}
+              required
+            />
           </div>
           <button
             type="submit"
