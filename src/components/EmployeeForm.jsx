@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import background2 from "./Image.jpeg";
+import { format } from "date-fns"; // Import format from date-fns for date formatting
 import { Link } from "react-router-dom";
 
 // Firebase configuration
@@ -21,7 +22,6 @@ const firebaseConfig = {
   measurementId: "G-442DLJQ799",
 };
 
-// Initialize Firebase
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
@@ -70,8 +70,8 @@ const EmployeeForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Format date as YYYY-MM-DD
-    const formattedDate = date ? date.toISOString().split("T")[0] : null;
+    // Format date as DD/MM/YYYY
+    const formattedDate = date ? format(date, "dd/MM/yyyy") : null;
 
     const data = {
       date: formattedDate,
@@ -105,7 +105,7 @@ const EmployeeForm = () => {
             <DatePicker
               selected={date}
               onChange={(date) => setDate(date)}
-              dateFormat="yyyy/MM/dd"
+              dateFormat="dd/MM/yyyy" // Update date format
               className="w-full p-2 border rounded"
               id="date"
               required
@@ -227,7 +227,7 @@ const EmployeeForm = () => {
           </div>
           <button
             type="submit"
-            className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="w-40 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Submit
           </button>

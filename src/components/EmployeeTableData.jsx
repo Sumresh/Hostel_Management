@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { format, parse } from "date-fns"; // Import date-fns for formatting
 
 // Firebase configuration
 const firebaseConfig = {
@@ -89,7 +90,9 @@ const EmployeeTableData = () => {
 
   const handleEdit = (employee) => {
     setEditingEmployee(employee);
-    setDate(employee.date ? new Date(employee.date) : null);
+    setDate(
+      employee.date ? parse(employee.date, "dd/MM/yyyy", new Date()) : null
+    ); // Parse date
     setEmployeeNumber(employee.employeeNumber || "");
     setName(employee.name || "");
     setState(employee.state || "");
@@ -102,7 +105,7 @@ const EmployeeTableData = () => {
   const handleUpdate = async () => {
     if (!editingEmployee) return;
 
-    const formattedDate = date ? date.toISOString().split("T")[0] : null;
+    const formattedDate = date ? format(date, "dd/MM/yyyy") : null; // Format date
 
     const updatedData = {
       date: formattedDate,
@@ -143,7 +146,9 @@ const EmployeeTableData = () => {
     const endDate = filterEndDate.getTime();
 
     const filtered = employees.filter((employee) => {
-      const employeeDate = new Date(employee.date).getTime();
+      const employeeDate = new Date(
+        employee.date.split("/").reverse().join("/")
+      ).getTime(); // Convert date format
       return employeeDate >= startDate && employeeDate <= endDate;
     });
 
@@ -183,7 +188,7 @@ const EmployeeTableData = () => {
                 selected={filterStartDate}
                 onChange={(date) => setFilterStartDate(date)}
                 className="w-full p-2 border rounded"
-                dateFormat="yyyy-MM-dd"
+                dateFormat="dd/MM/yyyy"
               />
             </div>
             <div>
@@ -192,7 +197,7 @@ const EmployeeTableData = () => {
                 selected={filterEndDate}
                 onChange={(date) => setFilterEndDate(date)}
                 className="w-full p-2 border rounded"
-                dateFormat="yyyy-MM-dd"
+                dateFormat="dd/MM/yyyy"
               />
             </div>
           </div>
@@ -247,10 +252,10 @@ const EmployeeTableData = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.status}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
                       onClick={() => handleEdit(employee)}
-                      className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      className="text-blue-600 hover:text-blue-900"
                     >
                       Edit
                     </button>
@@ -261,184 +266,139 @@ const EmployeeTableData = () => {
           </table>
         </div>
 
-        {editingEmployee && (
-          <div className="border-t border-gray-300 pt-6">
-            <h2 className="text-xl font-semibold mb-4">Edit Employee:</h2>
-            <form className="space-y-4">
-              <div>
-                <label
-                  htmlFor="date"
-                  className="block text-lg font-medium mb-2"
-                >
-                  Date:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded bg-gray-200 cursor-not-allowed"
-                  id="date"
-                  value={editingEmployee.date}
-                  readOnly
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="employeeNumber"
-                  className="block text-lg font-medium mb-2"
-                >
-                  Employee Number (Optional):
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  id="employeeNumber"
-                  value={employeeNumber}
-                  onChange={(e) => setEmployeeNumber(e.target.value)}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-lg font-medium mb-2"
-                >
-                  Name of Employee:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="state"
-                  className="block text-lg font-medium mb-2"
-                >
-                  State:
-                </label>
-                <select
-                  className="w-full p-2 border rounded"
-                  id="state"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  required
-                >
-                  <option value="">Select State</option>
-                  {states.map((state, index) => (
-                    <option key={index} value={state}>
-                      {state}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label
-                  htmlFor="referral"
-                  className="block text-lg font-medium mb-2"
-                >
-                  Referral Person Name:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  id="referral"
-                  value={referral}
-                  onChange={(e) => setReferral(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="shift"
-                  className="block text-lg font-medium mb-2"
-                >
-                  Shift:
-                </label>
-                <select
-                  className="w-full p-2 border rounded"
-                  id="shift"
-                  value={shift}
-                  onChange={(e) => setShift(e.target.value)}
-                  required
-                >
-                  <option value="A Shift">A Shift</option>
-                  <option value="B Shift">B Shift</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  htmlFor="status"
-                  className="block text-lg font-medium mb-2"
-                >
-                  Status:
-                </label>
-                <select
-                  className="w-full p-2 border rounded"
-                  id="status"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  required
-                >
-                  <option value="Active">Active</option>
-                  <option value="Resigned">Resigned</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  htmlFor="phoneNumber"
-                  className="block text-lg font-medium mb-2"
-                >
-                  Phone Number:
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-2 border rounded"
-                  id="phoneNumber"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    // Allow only digits and restrict to 10 characters
-                    if (/^\d{0,10}$/.test(value)) {
-                      setPhoneNumber(value);
-                    }
-                  }}
-                  required
-                />
-              </div>
-              <button
-                type="button"
-                onClick={handleUpdate}
-                className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Update
-              </button>
-            </form>
-          </div>
-        )}
-
-        {/* Pagination Controls */}
-        <div className="mt-6 flex justify-center">
+        <div className="flex justify-between items-center mb-4">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded-l hover:bg-blue-600 disabled:opacity-50"
+            className="py-2 px-4 bg-gray-300 text-white rounded hover:bg-gray-400"
           >
             Previous
           </button>
-          <span className="px-4 py-2 text-gray-700">
+          <span className="text-lg">
             Page {currentPage} of {totalPages}
           </span>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600 disabled:opacity-50"
+            className="py-2 px-4 bg-gray-300 text-white rounded hover:bg-gray-400"
           >
             Next
           </button>
         </div>
       </div>
+
+      {editingEmployee && (
+        <div className="border border-gray-300 p-6 rounded-lg shadow-lg bg-white mt-8">
+          <h2 className="text-2xl font-bold mb-4">Edit Employee</h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-lg font-medium mb-2">Date:</label>
+              <DatePicker
+                selected={date}
+                onChange={(date) => setDate(date)}
+                className="w-full p-2 border rounded"
+                dateFormat="dd/MM/yyyy"
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-medium mb-2">
+                Employee Number:
+              </label>
+              <input
+                type="text"
+                value={employeeNumber}
+                onChange={(e) => setEmployeeNumber(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-medium mb-2">Name:</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-medium mb-2">State:</label>
+              <select
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                <option value="">Select State</option>
+                {states.map((state) => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-lg font-medium mb-2">
+                Referral Person:
+              </label>
+              <input
+                type="text"
+                value={referral}
+                onChange={(e) => setReferral(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-medium mb-2">Shift:</label>
+              <select
+                value={shift}
+                onChange={(e) => setShift(e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                <option value="A Shift">A Shift</option>
+                <option value="B Shift">B Shift</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-lg font-medium mb-2">Status:</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                <option value="Active">Active</option>
+                <option value="Resigned">Resigned</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-lg font-medium mb-2">
+                Phone Number:
+              </label>
+              <input
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={() => setEditingEmployee(null)}
+              className="py-2 px-4 bg-gray-300 text-white rounded hover:bg-gray-400 mr-4"
+            >
+              Back
+            </button>
+            <button
+              onClick={handleUpdate}
+              className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      )}
+
       <ToastContainer />
     </div>
   );
