@@ -202,6 +202,7 @@ const EmployeeForm = () => {
             >
               <option value="Active">Active</option>
               <option value="Resigned">Resigned</option>
+              <option value="Native">Native</option>
             </select>
           </div>
           <div>
